@@ -1,18 +1,15 @@
 """
 The MIT License (MIT)
-
-Copyright (c) 2015-present Rapptz
-
+Copyright (c) 2015-2021 Rapptz
+Copyright (c) 2021-present Pycord Development
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),
 to deal in the Software without restriction, including without limitation
 the rights to use, copy, modify, merge, publish, distribute, sublicense,
 and/or sell copies of the Software, and to permit persons to whom the
 Software is furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -51,44 +48,31 @@ P = TypeVar('P', bound='Permissions')
 @fill_with_flags()
 class Permissions(BaseFlags):
     """Wraps up the Discord permission value.
-
     The properties provided are two way. You can set and retrieve individual
     bits using the properties as if they were regular bools. This allows
     you to edit permissions.
-
     .. versionchanged:: 1.3
         You can now use keyword arguments to initialize :class:`Permissions`
         similar to :meth:`update`.
-
     .. container:: operations
-
         .. describe:: x == y
-
             Checks if two permissions are equal.
         .. describe:: x != y
-
             Checks if two permissions are not equal.
         .. describe:: x <= y
-
             Checks if a permission is a subset of another permission.
         .. describe:: x >= y
-
             Checks if a permission is a superset of another permission.
         .. describe:: x < y
-
              Checks if a permission is a strict subset of another permission.
         .. describe:: x > y
-
              Checks if a permission is a strict superset of another permission.
         .. describe:: hash(x)
-
                Return the permission's hash.
         .. describe:: iter(x)
-
                Returns an iterator of ``(perm, value)`` pairs. This allows it
                to be, for example, constructed as a dict or a list of pairs.
                Note that aliases are not shown.
-
     Attributes
     -----------
     value: :class:`int`
@@ -147,14 +131,13 @@ class Permissions(BaseFlags):
         """A factory method that creates a :class:`Permissions` with all
         permissions set to ``True``.
         """
-        return cls(0b111111111111111111111111111111111111111)
+        return cls(-1)
 
     @classmethod
     def all_channel(cls: Type[P]) -> P:
         """A :class:`Permissions` with all channel-specific permissions set to
         ``True`` and the guild-specific ones set to ``False``. The guild-specific
         permissions are currently:
-
         - :attr:`manage_emojis`
         - :attr:`view_audit_log`
         - :attr:`view_guild_insights`
@@ -164,10 +147,8 @@ class Permissions(BaseFlags):
         - :attr:`kick_members`
         - :attr:`ban_members`
         - :attr:`administrator`
-
         .. versionchanged:: 1.7
            Added :attr:`stream`, :attr:`priority_speaker` and :attr:`use_slash_commands` permissions.
-
         .. versionchanged:: 2.0
            Added :attr:`create_public_threads`, :attr:`create_private_threads`, :attr:`manage_threads`,
            :attr:`use_external_stickers`, :attr:`send_messages_in_threads` and
@@ -179,7 +160,6 @@ class Permissions(BaseFlags):
     def general(cls: Type[P]) -> P:
         """A factory method that creates a :class:`Permissions` with all
         "General" permissions from the official Discord UI set to ``True``.
-
         .. versionchanged:: 1.7
            Permission :attr:`read_messages` is now included in the general permissions, but
            permissions :attr:`administrator`, :attr:`create_instant_invite`, :attr:`kick_members`,
@@ -192,7 +172,6 @@ class Permissions(BaseFlags):
     def membership(cls: Type[P]) -> P:
         """A factory method that creates a :class:`Permissions` with all
         "Membership" permissions from the official Discord UI set to ``True``.
-
         .. versionadded:: 1.7
         """
         return cls(0b00001100000000000000000000000111)
@@ -201,11 +180,9 @@ class Permissions(BaseFlags):
     def text(cls: Type[P]) -> P:
         """A factory method that creates a :class:`Permissions` with all
         "Text" permissions from the official Discord UI set to ``True``.
-
         .. versionchanged:: 1.7
            Permission :attr:`read_messages` is no longer part of the text permissions.
            Added :attr:`use_slash_commands` permission.
-
         .. versionchanged:: 2.0
            Added :attr:`create_public_threads`, :attr:`create_private_threads`, :attr:`manage_threads`,
            :attr:`send_messages_in_threads` and :attr:`use_external_stickers` permissions.
@@ -222,7 +199,6 @@ class Permissions(BaseFlags):
     def stage(cls: Type[P]) -> P:
         """A factory method that creates a :class:`Permissions` with all
         "Stage Channel" permissions from the official Discord UI set to ``True``.
-
         .. versionadded:: 1.7
         """
         return cls(1 << 32)
@@ -231,7 +207,6 @@ class Permissions(BaseFlags):
     def stage_moderator(cls: Type[P]) -> P:
         """A factory method that creates a :class:`Permissions` with all
         "Stage Moderator" permissions from the official Discord UI set to ``True``.
-
         .. versionadded:: 1.7
         """
         return cls(0b100000001010000000000000000000000)
@@ -240,18 +215,15 @@ class Permissions(BaseFlags):
     def advanced(cls: Type[P]) -> P:
         """A factory method that creates a :class:`Permissions` with all
         "Advanced" permissions from the official Discord UI set to ``True``.
-
         .. versionadded:: 1.7
         """
         return cls(1 << 3)
 
     def update(self, **kwargs: bool) -> None:
         r"""Bulk updates this permission object.
-
         Allows you to set multiple attributes by using keyword
         arguments. The names must be equivalent to the properties
         listed. Extraneous key/value pairs will be silently ignored.
-
         Parameters
         ------------
         \*\*kwargs
@@ -294,7 +266,6 @@ class Permissions(BaseFlags):
     @flag_value
     def administrator(self) -> int:
         """:class:`bool`: Returns ``True`` if a user is an administrator. This role overrides all other permissions.
-
         This also bypasses all channel-specific overrides.
         """
         return 1 << 3
@@ -302,7 +273,6 @@ class Permissions(BaseFlags):
     @flag_value
     def manage_channels(self) -> int:
         """:class:`bool`: Returns ``True`` if a user can edit, delete, or create channels in the guild.
-
         This also corresponds to the "Manage Channel" channel-specific override."""
         return 1 << 4
 
@@ -339,7 +309,6 @@ class Permissions(BaseFlags):
     @make_permission_alias('read_messages')
     def view_channel(self) -> int:
         """:class:`bool`: An alias for :attr:`read_messages`.
-
         .. versionadded:: 1.3
         """
         return 1 << 10
@@ -357,9 +326,7 @@ class Permissions(BaseFlags):
     @flag_value
     def manage_messages(self) -> int:
         """:class:`bool`: Returns ``True`` if a user can delete or pin messages in a text channel.
-
         .. note::
-
             Note that there are currently no ways to edit other people's messages.
         """
         return 1 << 13
@@ -392,7 +359,6 @@ class Permissions(BaseFlags):
     @make_permission_alias('external_emojis')
     def use_external_emojis(self) -> int:
         """:class:`bool`: An alias for :attr:`external_emojis`.
-
         .. versionadded:: 1.3
         """
         return 1 << 18
@@ -400,7 +366,6 @@ class Permissions(BaseFlags):
     @flag_value
     def view_guild_insights(self) -> int:
         """:class:`bool`: Returns ``True`` if a user can view the guild's insights.
-
         .. versionadded:: 1.3
         """
         return 1 << 19
@@ -448,7 +413,6 @@ class Permissions(BaseFlags):
     @flag_value
     def manage_roles(self) -> int:
         """:class:`bool`: Returns ``True`` if a user can create or edit roles less than their role's position.
-
         This also corresponds to the "Manage Permissions" channel-specific override.
         """
         return 1 << 28
@@ -456,7 +420,6 @@ class Permissions(BaseFlags):
     @make_permission_alias('manage_roles')
     def manage_permissions(self) -> int:
         """:class:`bool`: An alias for :attr:`manage_roles`.
-
         .. versionadded:: 1.3
         """
         return 1 << 28
@@ -474,7 +437,6 @@ class Permissions(BaseFlags):
     @make_permission_alias('manage_emojis')
     def manage_emojis_and_stickers(self) -> int:
         """:class:`bool`: An alias for :attr:`manage_emojis`.
-
         .. versionadded:: 2.0
         """
         return 1 << 30
@@ -482,15 +444,20 @@ class Permissions(BaseFlags):
     @flag_value
     def use_slash_commands(self) -> int:
         """:class:`bool`: Returns ``True`` if a user can use slash commands.
-
         .. versionadded:: 1.7
+        """
+        return 1 << 31
+    
+    @make_permission_alias('use_slash_commands')
+    def use_application_commands(self) -> int:
+        """:class:`bool`: An alias for :attr:`use_slash_commands`.
+        .. versionadded:: 2.0
         """
         return 1 << 31
 
     @flag_value
     def request_to_speak(self) -> int:
         """:class:`bool`: Returns ``True`` if a user can request to speak in a stage channel.
-
         .. versionadded:: 1.7
         """
         return 1 << 32
@@ -498,7 +465,6 @@ class Permissions(BaseFlags):
     @flag_value
     def manage_events(self) -> int:
         """:class:`bool`: Returns ``True`` if a user can manage guild events.
-
         .. versionadded:: 2.0
         """
         return 1 << 33
@@ -506,7 +472,6 @@ class Permissions(BaseFlags):
     @flag_value
     def manage_threads(self) -> int:
         """:class:`bool`: Returns ``True`` if a user can manage threads.
-
         .. versionadded:: 2.0
         """
         return 1 << 34
@@ -514,7 +479,6 @@ class Permissions(BaseFlags):
     @flag_value
     def create_public_threads(self) -> int:
         """:class:`bool`: Returns ``True`` if a user can create public threads.
-
         .. versionadded:: 2.0
         """
         return 1 << 35
@@ -522,7 +486,6 @@ class Permissions(BaseFlags):
     @flag_value
     def create_private_threads(self) -> int:
         """:class:`bool`: Returns ``True`` if a user can create private threads.
-
         .. versionadded:: 2.0
         """
         return 1 << 36
@@ -530,7 +493,6 @@ class Permissions(BaseFlags):
     @flag_value
     def external_stickers(self) -> int:
         """:class:`bool`: Returns ``True`` if a user can use stickers from other guilds.
-
         .. versionadded:: 2.0
         """
         return 1 << 37
@@ -538,7 +500,6 @@ class Permissions(BaseFlags):
     @make_permission_alias('external_stickers')
     def use_external_stickers(self) -> int:
         """:class:`bool`: An alias for :attr:`external_stickers`.
-
         .. versionadded:: 2.0
         """
         return 1 << 37
@@ -546,10 +507,23 @@ class Permissions(BaseFlags):
     @flag_value
     def send_messages_in_threads(self) -> int:
         """:class:`bool`: Returns ``True`` if a user can send messages in threads.
-
         .. versionadded:: 2.0
         """
         return 1 << 38
+   
+    @flag_value
+    def start_embedded_activities(self) -> int:
+        """:class:`bool`: Returns ``True`` if a user can launch an activity flagged 'EMBEDDED' in a voice channel.
+        .. versionadded:: 2.0
+        """
+        return 1 << 39
+    
+    @flag_value
+    def moderate_members(self) -> int:
+        """:class:`bool`: Returns ``True`` if a user can moderate members (timeout).
+        .. versionadded:: 2.0
+        """
+        return 1 << 40
 
 PO = TypeVar('PO', bound='PermissionOverwrite')
 
@@ -584,30 +558,22 @@ def _augment_from_permissions(cls):
 @_augment_from_permissions
 class PermissionOverwrite:
     r"""A type that is used to represent a channel specific permission.
-
     Unlike a regular :class:`Permissions`\, the default value of a
     permission is equivalent to ``None`` and not ``False``. Setting
     a value to ``False`` is **explicitly** denying that permission,
     while setting a value to ``True`` is **explicitly** allowing
     that permission.
-
     The values supported by this are the same as :class:`Permissions`
     with the added possibility of it being set to ``None``.
-
     .. container:: operations
-
         .. describe:: x == y
-
             Checks if two overwrites are equal.
         .. describe:: x != y
-
             Checks if two overwrites are not equal.
         .. describe:: iter(x)
-
            Returns an iterator of ``(perm, value)`` pairs. This allows it
            to be, for example, constructed as a dict or a list of pairs.
            Note that aliases are not shown.
-
     Parameters
     -----------
     \*\*kwargs
@@ -664,6 +630,8 @@ class PermissionOverwrite:
         send_messages_in_threads: Optional[bool]
         external_stickers: Optional[bool]
         use_external_stickers: Optional[bool]
+        start_embedded_activities: Optional[bool]
+        moderate_members: Optional[bool]
 
     def __init__(self, **kwargs: Optional[bool]):
         self._values: Dict[str, Optional[bool]] = {}
@@ -716,10 +684,8 @@ class PermissionOverwrite:
 
     def is_empty(self) -> bool:
         """Checks if the permission overwrite is currently empty.
-
         An empty permission overwrite is one that has no overwrites set
         to ``True`` or ``False``.
-
         Returns
         -------
         :class:`bool`
@@ -729,11 +695,9 @@ class PermissionOverwrite:
 
     def update(self, **kwargs: bool) -> None:
         r"""Bulk updates this permission overwrite object.
-
         Allows you to set multiple attributes by using keyword
         arguments. The names must be equivalent to the properties
         listed. Extraneous key/value pairs will be silently ignored.
-
         Parameters
         ------------
         \*\*kwargs
